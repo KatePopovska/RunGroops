@@ -84,15 +84,10 @@ namespace RunGroops.Controllers
                     return View(clubViewModel);
                 }
                 var photoResult = await _photoService.AddPhotoAsync(clubViewModel.Image);
-                var club = new Club
-                {
-                    Id = id,
-                    Title = clubViewModel.Title,
-                    Description = clubViewModel.Description,
-                    Image = photoResult.Url.ToString(),
-                    AddressId = clubViewModel.AddressId,
-                    Address = clubViewModel.Address,
-                };
+                var club = _mapper.Map<Club>(clubViewModel);
+                club.Id = id;
+                club.Image = photoResult.Url.ToString();
+      
                 _repository.Update(club);
                 return RedirectToAction("Index");
             }

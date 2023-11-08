@@ -51,5 +51,52 @@ namespace RunGroops.Controllers
             }
             return View(raceViewModel);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var race = await _repository.GetById(id);
+            if (race == null)
+            {
+                return View("Error");
+            }
+            var raceViewModel = _mapper.Map<EditRaceViewModel>(race);
+            return View(raceViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditRaceViewModel raceViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed tp edit");
+                return View("Error", raceViewModel);
+            }
+
+            var userRace = await _repository.GetByIdAsyncNoTracking(id);
+            if(userRace != null) 
+            {
+                try
+                {
+                    await _photoService.DeletePhotoAsync(userRace.Image);
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Could not delete photo");
+                    return View(raceViewModel);
+                }
+                var photoResult = await _photoService.AddPhotoAsync(raceViewModel.Image);
+                var race = _mapper.Map<Race>(raceViewModel);
+                race.Id = id;
+                race.Image = photoResult.Url.ToString();
+
+                _repository.Update(race);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(raceViewModel);
+            }
+
+        }
     }
 }

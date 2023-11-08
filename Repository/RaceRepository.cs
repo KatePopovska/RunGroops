@@ -55,13 +55,13 @@ namespace RunGroops.Repository
 
         public bool Update(Race race)
         {
-            var raceToUpdate = _context.FindAsync<Race>(race);
-            if (raceToUpdate == null)
-            {
-                throw new KeyNotFoundException("Not Found");
-            }
-            _context.Update(raceToUpdate);
+            _context.Update(race);
             return Save();
+        }
+
+        public async Task<Race> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Races.Include(i => i.Address).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
         }
     }
 }

@@ -16,6 +16,12 @@ namespace RunGroops.Mapping
             CreateMap<EditClubViewModel, Club>()
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(s => s.URL));
+            CreateMap<EditRaceViewModel,Race>()
+                 .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(s => s.URL));
+            CreateMap<Race, EditRaceViewModel>()
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ForMember(dest => dest.URL, opt => opt.MapFrom(s => s.Image));
         }
     }
 }

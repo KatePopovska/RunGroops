@@ -71,6 +71,7 @@ _i.h
 .pidb
 .svclog
 .scc
+appsettings.json
 
 # Chutzpah Test files
 _Chutzpah

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using RunGroops.Interfaces;
 using RunGroops.Models;
 using RunGroops.ViewModels;
@@ -94,8 +95,29 @@ namespace RunGroops.Controllers
             else
             {
                 return View(clubViewModel);
+            }          
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var clubDetails = await _repository.GetById(id);
+            if (clubDetails == null)
+            {
+                return View("Error");
             }
-            
+            return View(clubDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteClub(int id)
+        {
+            var clubToDelete = await _repository.GetById(id);   
+            if(clubToDelete == null)
+            {
+                return View("Error");
+            }
+            _repository.Delete(clubToDelete);
+            return RedirectToAction("Index");
         }
               
     }

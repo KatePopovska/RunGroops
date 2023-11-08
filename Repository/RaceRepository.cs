@@ -22,12 +22,7 @@ namespace RunGroops.Repository
 
         public bool Delete(Race race)
         {
-            var raceToDelete = _context.FindAsync<Race>(race);
-            if(raceToDelete == null)
-            {
-                throw new KeyNotFoundException("Not Found");
-            }
-            _context.Remove(raceToDelete);
+            _context.Remove(race);
             return Save();
         }
 

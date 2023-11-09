@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using RunGroops.Interfaces;
 using RunGroops.Models;
 using RunGroops.ViewModels;
